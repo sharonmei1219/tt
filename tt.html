@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+	<h1> This is a Heading</h1>
+	<p> This is a paragraph</p>
+	<div id="gameZone" style="background:black; width:600px; height:400px; position:absolute">
+	</div>
+
+	<script type="text/javascript">
+	document.addEventListener("DOMContentLoaded", function(event) { 
+  		var followingP = document.createElement("P")
+  		followingP.style.color = "white"
+  		followingP.style.position = "absolute"
+  		followingP.style.left = "100px"
+  		followingP.style.top = "0px"
+  		var followingInterval = setInterval(function(){
+  			var top = followingP.style.top
+  			top = top.substring(0, top.length - 2)
+  			followingP.style.top = (parseInt(top) + 10).toString() + "px"
+  		}, 200)
+  		var followingString = document.createTextNode("Sharon")
+  		followingP.appendChild(followingString)
+  		document.getElementById("gameZone").appendChild(followingP)
+
+	});
+	</script>
+</body>
+</html>
