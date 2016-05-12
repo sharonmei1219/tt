@@ -37,8 +37,6 @@ var bounds = {
 	}
 }
 
-
-
 function getAddProblem(bound){
 	rT = getRandomInRange(bound.sum_tens)
 	rU = getRandomInRange(bound.sum_units)

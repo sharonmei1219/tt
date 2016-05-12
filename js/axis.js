@@ -89,3 +89,11 @@ function Axis(startInput, endInput){
 		return pz
 	}
 }
+
+function loadAxisProblem(count, problemZone){
+	pv = new ProblemView(problemZone, '数射线', 'LG')
+	pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(4).withMarkProblem(3).build())
+	pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(1).withMarkProblem(2).build())
+	pv.putProblemHtmlElement((new Axis(36, 84)).withTellProblem(2).withMarkProblem(4).build())
+	pv.putProblemHtmlElement((new Axis(22, 87)).withTellProblem(5).withMarkProblem(5).build())
+}

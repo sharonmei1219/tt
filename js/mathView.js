@@ -78,9 +78,29 @@ function ProblemView(zone, title, viewClass){
 	}
 }
 
+function ctr(placeholder, loadingFunction){
+	var addingProblem = $('<div>', {class: "input-group"})
+	var number = $('<input>').attr({type:'number',
+                                 class: 'form-control',
+                                 placeholder: placeholder})
+	var addingButtonSpan = $('<span>', {class: 'input-group-btn'})
+	var button = $('<button>', {class: "btn btn-secondary",
+									 type: "button",
+									 id: "sharon"})
+	button.text("Add")
+	addingButtonSpan.append(button)
+
+	addingProblem.append(number)
+	addingProblem.append(addingButtonSpan)
+	button.click(function(){
+		loadingFunction(number.val(), problemZone)
+	})
+	return addingProblem
+}
 
 $(function(){
 	problemZone = $('#customized-problem-zone')
+	buttonZone = $('#button-zone')
 
 	$('.print-button').click(function(){
 		window.print()
@@ -97,48 +117,11 @@ $(function(){
 		}
 	})
 
-	// $('#maxCountButton').click(function(){
-	// 	value = $('#maxCountInput').val()
-	// 	if(value){
-	// 		loadMaxProblemOfCount(value, problemZone)
-	// 	}
-	// })
-
-
-	function createControl(placeholder, loadingFunction){
-		var addingProblem = $('<div>', {class: "input-group"})
-		var number = $('<input>').attr({type:'number',
-	                                 class: 'form-control',
-	                                 placeholder: placeholder})
-		var addingButtonSpan = $('<span>', {class: 'input-group-btn'})
-		var button = $('<button>', {class: "btn btn-secondary",
-										 type: "button",
-										 id: "sharon"})
-		button.text("Add")
-		addingButtonSpan.append(button)
-
-		addingProblem.append(number)
-		addingProblem.append(addingButtonSpan)
-		button.click(function(){
-			loadingFunction(number.val(), problemZone)
-		})
-		return addingProblem
-	}
-
-
-	$('#button-zone').append(createControl('求最大值', loadMaxProblemOfCount))
-	$('#button-zone').append(createControl('求最小值', loadMinProblemOfCount))
-	$('#button-zone').append(createControl('乘法题', loadMultiplyProblemsOfCount))
-	$('#button-zone').append(createControl('一元一次方程', loadLinearEquationWithOneUnknown))
-	$('#button-zone').append(createControl('应用题', loadApplicationProblem))
-
-
-
-
-	$('#linerEquationButton').click(function(){
-		value = $('#linerEquationInput').val()
-		if(value){
-			loadLinearEquationWithOneUnknown(value, problemZone)
-		}
-	})
+	
+	buttonZone.append(ctr('求最大值', loadMaxProblemOfCount))
+	buttonZone.append(ctr('求最小值', loadMinProblemOfCount))
+	buttonZone.append(ctr('数射线', loadAxisProblem))
+	buttonZone.append(ctr('乘法题', loadMultiplyProblemsOfCount))
+	buttonZone.append(ctr('一元一次方程', loadLinearEquationWithOneUnknown))
+	buttonZone.append(ctr('应用题', loadApplicationProblem))
 })
