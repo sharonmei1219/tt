@@ -1,0 +1,46 @@
+@media print {
+	#button-zone{
+		display: none
+	}
+	.nav{
+		display: none;
+	}
+	.jumbotron{
+		display: none;
+	}
+	#customized-problem-zone{
+		margin-left: 20mm;
+	}
+}
+
+.problem{
+	font-size: 15px
+
+}
+
+.jumbotron{
+    padding-right: 120px;
+    padding-left: 120px;
+    border-radius: 6px;
+}
+
+.problemSectionFrame{
+	margin-top: 25px;
+}
+
+.problemMD{
+	margin-bottom: 100px;
+}
+
+.problemLG{
+	margin-bottom: 150px;
+}
+
+.input-group{
+	margin-top: 10px
+}
+
+i{
+	font-family: freeserif, "times new roman", serif;
+	font-size: 18px
+}

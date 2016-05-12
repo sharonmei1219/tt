@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/plusMinus.css">
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.6-dist/css/bootstrap.css">
+</head>
+
+<body>
+	<div class = "jumbotron">
+		<h1> Lulu's Math <small>Practice makes perfect</small></h1>
+		<p> Print the problems and work them out on paper, working online is not supported</p>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-2 col-md-1">
+		</div>
+		<div class = "col-lg-10 col-md-11">
+
+			<ul class="nav nav-tabs">
+			  <li  class="active"><a data-toggle="tab" href="#customized">Customized</a></li>
+			</ul>
+
+			<div class="tab-content">
+			    <div id="customized" class="tab-pane fade in active">
+			    	<div class = "row">
+			    		<div class="col-lg-8 col-md-8" id="customized-problem-zone">
+			    		</div>
+			    		<div class="col-lg-2 col-md-3" id="button-zone">
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="plusMinusCountInput" placeholder='加减法题目'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="plusMinusCountButton">Add</button>
+						      </span>
+  						      <span class="input-group-btn">
+						        <button class="btn btn-secondary btn-info" type="button" data-toggle="collapse" data-target="#configPlusMinus">...</button>
+						      </span>
+						    </div>
+
+						    <div id="configPlusMinus" class="collapse">
+								<div class="checkbox">
+									<label class="checkbox-inline"><input type="checkbox" id="lessThan10" value=""><10</label>
+									<label class="checkbox-inline"><input type="checkbox" id="lessThan20" value=""><20</label>
+									<label class="checkbox-inline"><input type="checkbox" id="lessThan100" value="" checked="checked"><100</label>
+								</div>
+
+								<div class="checkbox">
+									<label class="checkbox-inline"><input type="checkbox" id="opAdd" value="" checked="checked">+</label>
+									<label class="checkbox-inline"><input type="checkbox" id="opMinus" value="" checked="checked">-</label>
+								</div>
+
+								<div class="checkbox">
+									<label class="checkbox-inline"><input type="checkbox" id="simple" value="">不进位</label>
+									<label class="checkbox-inline"><input type="checkbox" id="carry-over" value="" checked="checked">进位</label>
+								</div>
+
+								<div class="checkbox">
+									<label><input type="checkbox" id="random-q-position" value="">__ + 1 = 2</label>
+								</div>
+							</div>
+
+
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="maxCountInput" placeholder='最大值题目'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="maxCountButton">Add</button>
+						      </span>
+						    </div>						 
+
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="minCountInput" placeholder='最小值题目'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="minCountButton">Add</button>
+						      </span>
+						    </div>	
+
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="multiplyCountInput" placeholder='乘法题目'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="multiplyCountButton">Add</button>
+						      </span>
+						    </div>
+
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="applicationCountInput" placeholder='应用题'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="applicationCountButton">Add</button>
+						      </span>
+						    </div>
+
+						    <div class="input-group">
+						      <input type="number" class="form-control" id="linerEquationInput" placeholder='一元一次方程'>
+						      <span class="input-group-btn">
+						        <button class="btn btn-secondary" type="button" id="linerEquationButton">Add</button>
+						      </span>
+						    </div>
+
+						    <br>
+							<p><a class="btn btn-success btn-block" id="home-button" href="../SharonHome">Home</a></p>
+							<p><button class="btn btn-info btn-block" id="clearCustomizedZoneButton">Clear</button></p>
+							<p><button class="btn btn-primary btn-block print-button">Print</button></p>
+			    		</div>
+			    	</div>
+			    </div>
+
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+
+<script src="js/jquery-2.2.0.js"></script>
+<script src="js/mathView.js"></script>
+<script src="js/normalProblem.js"></script>
+<script src="js/maxMinProblem.js"></script>
+<script src="js/multiplyProblem.js"></script>
+<script src="js/applicationProblem.js"></script>
+<script type="text/javascript" src="bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.6-dist/css/bootstrap.css">
+	<style>
+	@media print {
+		.print-none{
+			display: none
+		}
+	}
+	.sudokuTable {
+		border-collapse: collapse;
+		border-right: 2px solid black;
+		border-bottom: 2px solid black;
+	}
+	.topRow {
+		border-top: 2px solid black;
+	}
+	.cell {
+		position: relative;
+		border: 1px solid gray;
+		width: 28px;
+		height: 28px;
+		font-size: 20px;
+	}
+	.leftMostCell {
+		border-left: 2px solid black;
+	}
+	.puzzle-zone {
+		margin-top: 20px
+	}
+	#level-button{
+		display: none
+	}
+	.level-tag{
+		position: relative;
+		top: 18px;
+	}
+	.btn-group{
+		margin-top: 20px
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+	  <h1 class="print-none">Print Sudoku</h1>
+	  <p>www.alruo.com </p>
+	  <p class="print-none">Pick up puzzles and print them</p>
+
+	  <div class="row" id="row-1">
+	  </div>
+	  <div class="row" id="row-2">
+	  </div>
+	  <div class="row" id="row-3">
+	  </div>
+	</div>
+</body>
+<script src="js/jquery-2.2.0.js"></script>
+<script type="text/javascript">
+function tableOf(tableSize, blockSize){
+	var table = $("<table class='sudokuTable' align='left'></table>")
+	var tr
+	for(var j = 0; j < tableSize; j++){
+		if(j%blockSize == 0){
+			tr = $("<tr class='topRow'></tr>")
+		}else{
+			tr = $("<tr class='ordinaryRow'></tr>")
+		}
+		for(var i = 0; i < tableSize; i++){
+			if(i%blockSize == 0){
+				tr.append($("<td class='cell leftMostCell' id='cell-"+i+"-"+j+"'></td>"))
+			}else{
+				tr.append($("<td class='cell' id='cell-"+i+"-"+j+"'></td>"))
+			}
+		}
+		table.append(tr)
+	}
+	return table
+}
+
+function addTableToZone(zone, table){
+	$(zone).find(".sudokuTable").remove()
+	$(zone).append(table)
+}
+
+function PuzzleViewController(zone){
+	var _tableSize
+	var _blockSize
+	var _tableZone = zone.find("#table")
+
+	function tableButtonClicked(tableSize, blockSize){
+		return function(){
+			_tableSize = tableSize
+			_blockSize = blockSize
+			var table = tableOf(tableSize, blockSize)
+			zone.find("#table-button").remove()
+			zone.find("#level-button").css("display", "inline-block")
+			addTableToZone(_tableZone, table)
+		}
+	}
+	zone.find("#add-99").click(tableButtonClicked(9, 3))
+	zone.find("#add-55").click(tableButtonClicked(5, 5))
+	zone.find("#add-44").click(tableButtonClicked(4, 4))
+
+	function levelButtonClickedd(level){
+		return function(){
+			zone.find("#level-button").remove()
+			zone.prepend($("<p class='level-tag'>" + level +"</p>"))
+			$.ajax({
+				type : "POST",
+				url : "sudoku/new",
+				data : JSON.stringify({level:level, type: _tableSize}),
+				contentType: 'application/json',
+				success : function(response){
+					puzzle = JSON.parse(response);
+					console.log(response)
+				}
+			});
+			console.log(level + ', ' + _tableSize + ', ' + _blockSize)
+		}
+	}
+	zone.find("#level-easy").click(levelButtonClickedd("easy"))
+	zone.find("#level-normal").click(levelButtonClickedd("normal"))
+	zone.find("#level-hard").click(levelButtonClickedd("hard"))
+}
+
+function PuzzleView(zoneId){
+	var zone = $("<div class='col-xs-6' id='" + zoneId +"'></div>")
+	var buttonGroup = $("<div class='btn-group print-none' id='table-button'></div>")
+	buttonGroup.append($("<button type='button' class='btn btn-default' id='add-99'>9X9</button>"))
+	buttonGroup.append($("<button type='button' class='btn btn-default' id='add-55'>5X5</button>"))
+	buttonGroup.append($("<button type='button' class='btn btn-default' id='add-44'>4X4</button>"))
+	zone.append(buttonGroup)
+
+	buttonGroup = $("<div class='btn-group print-none' id='level-button'></div>")
+	buttonGroup.append($("<button type='button' class='btn btn-info' id='level-easy'>easy</button>"))
+	buttonGroup.append($("<button type='button' class='btn btn-info' id='level-normal'>normal</button>"))
+	buttonGroup.append($("<button type='button' class='btn btn-info' id='level-hard'>hard</button>"))
+	zone.append(buttonGroup)
+
+	zone.append($("<div class='puzzle-zone' id='table'></div>"))
+
+	return zone
+}
+
+$(function(){
+	$("#row-1").append(PuzzleView("zone-1"))
+	$("#row-1").append(PuzzleView("zone-2"))
+	$("#row-2").append(PuzzleView("zone-3"))
+	$("#row-2").append(PuzzleView("zone-4"))
+	$("#row-3").append(PuzzleView("zone-5"))
+	$("#row-3").append(PuzzleView("zone-6"))
+	p1 = new PuzzleViewController($("#zone-1"))
+	p2 = new PuzzleViewController($("#zone-2"))
+	p3 = new PuzzleViewController($("#zone-3"))
+	p4 = new PuzzleViewController($("#zone-4"))
+	p5 = new PuzzleViewController($("#zone-5"))
+	p6 = new PuzzleViewController($("#zone-6"))
+
+})
+
+</script>
+</html>
