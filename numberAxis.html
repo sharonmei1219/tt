@@ -18,100 +18,16 @@
 </body>
 
 <script src="js/jquery-2.2.0.js"></script>
+<script src="js/mathView.js"></script>
+<script src="js/axis.js"></script>
 <script>
-	function getRandomInt(min, max) {
-	    return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
-
-	function NumberAxis(start, end, canvasCtx){
-		var lineLength = 650 - 0 - 30
-		var offsetLeft = 10
-		var totalPoints = end - start
-		var gap = lineLength / totalPoints
-
-		this.drawAxis = function(){
-			console.log("drawAxis " + start.toString() + ' ' + end.toString())
-			canvasCtx.moveTo(0,50);
-			canvasCtx.lineTo(650,50);
-			canvasCtx.stroke();
-			
-			for(var x = start; x <= end; x++){
-				xp = offsetLeft + gap * (x - start)
-				canvasCtx.moveTo(xp, 50);
-				canvasCtx.lineTo(xp, 47);
-				canvasCtx.stroke()
-				if ((x % 5) == 0){
-					canvasCtx.moveTo(xp, 50);
-					canvasCtx.lineTo(xp, 44);
-					canvasCtx.stroke()
-				}
-				if ((x % 10) == 0){
-					canvasCtx.moveTo(xp, 56);
-					canvasCtx.lineTo(xp, 44);
-					canvasCtx.stroke()
-					canvasCtx.fillText(x.toString(),xp - 6,70);
-				}
-			}
-		}
-
-		this.putTarget = function(target, tag){
-			var targetOffSet = (target - start) * gap + offsetLeft
-			canvasCtx.moveTo(targetOffSet + 0.5, 42)
-			canvasCtx.lineTo(targetOffSet + 0.5, 25)
-			canvasCtx.stroke()
-			canvasCtx.fillText(tag,targetOffSet - 4,20);
-		}
-	}
-
-	function getRandomSeq(start, end, count){
-		var result = []
-		for(i = 0; i < count; i++){
-			result.push(getRandomInt(start, end))
-		}
-		result.sort(function(a, b){return a - b})
-		return result
-	}
-
 	$(function(){
-		tags = ["a", "b", "c", "d", "e", "f"]
-		pz = $('#problemZone')
-
-		function addProblem(problemID, problemZone){
-			cavas = $('<div/>').html('<canvas id="' + problemID + '" width="650" height="70"></canvas>').contents()
-			problemRead = $('<p>a, b, c, d, e, f分别是多少</P>')
-			problemReadDetails = $('<div class = "row"></div')
-			for(i = 0; i < 6; i++){
-				pdetail = $('<div class = "col-xs-4"></div>')
-				pdetail.append($('<p>' + tags[i] + ' = (_____)</p>'))
-				problemReadDetails.append(pdetail)
-			}
-			pz.append(cavas)
-			pz.append(problemRead)
-			pz.append(problemReadDetails)
-			pz.append($('<p id = "' + problemID + '-Mark"></p>'))
-		}
-
-		function putNewProblem(problemID, startInput, endInput){
-			addProblem(problemID, pz)
-			var c = document.getElementById(problemID);
-			var ctx = c.getContext("2d");
-			ctx.font = "12px Arial";
-			var numberAxis = new NumberAxis(startInput, endInput, ctx)
-			numberAxis.drawAxis()
-			aTof = getRandomSeq(startInput, endInput, 6)
-			for(i = 0; i < 6; i++){
-				numberAxis.putTarget(aTof[i], tags[i])
-			}
-			markNumber = getRandomSeq(startInput, endInput, 5)
-			$("#"+ problemID + "-Mark").html("请在数射线上标出" + markNumber.toString())
-		}
-
-		putNewProblem("problem-1", 0, 100)
-		putNewProblem("problem-2", 0, 100)
-		putNewProblem("problem-3", 36, 84)
-		putNewProblem("problem-4", 22, 87)
-		
+		pzone = $('#problemZone')
+		pv = new ProblemView(pzone, '数射线', 'LG')
+		pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(4).withMarkProblem(3).build())
+		pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(1).withMarkProblem(2).build())
+		pv.putProblemHtmlElement((new Axis(36, 84)).withTellProblem(2).withMarkProblem(4).build())
+		pv.putProblemHtmlElement((new Axis(22, 87)).withTellProblem(5).withMarkProblem(5).build())
 	})
-
 </script>
 </html>

@@ -1,6 +1,6 @@
 function loadApplicationProblem(count, problemZone){
 	pv = new ProblemView(problemZone, '应用题', 'LG')
-	pv.putProblem("有两辆公交车，第一辆车上有18个人，第二辆车上有12个人，那么从第一辆车上分几个人到第二辆车上，两车的人数就相等了？")
+	pv.putProblem("有两辆公交车，第一辆车上有18个人，第二辆车上有12个人，那么从第一辆车上分几个人到第二辆车上，两车的人数就相等了?")
 	pv.putProblem("小朋友们排队，第一队有8个小朋友，从第二队过来3个小朋友后，两队的小朋友就一样多了，第二队原来有多少个小朋友？")
 	pv.putProblem("爸爸，妈妈有一样多的糖果，爸爸给了妈妈3块糖后，谁的糖多一些？多几块？")
 	pv.putProblem("小华比小明多8支铅笔，小华要给小明多少支铅笔，他俩的铅笔才能一样多？")

@@ -11,6 +11,25 @@ function pickRamdomItemInList(list){
 	return list[index]
 }
 
+function getRandomNumbersWithMinGap(start, end, count, gap){
+	var result = []
+	randEnd = end - (count-1) * gap
+	//random numbers
+	for(i = 0; i < count; i++){
+		result.push(getRandomInt(start, randEnd))
+	}
+
+	//sort random numbers
+	result.sort(function(a, b){return a - b})
+
+	//make gap
+	for(i = 1; i < count; i++){
+		result[i] = result[i] + gap * i
+	}
+
+	return result
+}
+
 function ProblemView(zone, title, viewClass){
 
 	if(viewClass == "MD"){
@@ -50,6 +69,13 @@ function ProblemView(zone, title, viewClass){
 		_section.find(columnId).first().append('<p class="problem' + viewClass + '">'+problem+'</p>')
 		columnIndex = (columnIndex + 1)%columnCount;
 	}
+
+	this.putProblemHtmlElement = function(elem){
+		problem = $("<div>", {class: "problem" + viewClass}).append(elem)
+		columnId = "#" + getColumnId(columnIndex)
+		_section.find(columnId).append(problem)
+		columnIndex = (columnIndex + 1)%columnCount;
+	}
 }
 
 
@@ -71,33 +97,43 @@ $(function(){
 		}
 	})
 
-	$('#maxCountButton').click(function(){
-		value = $('#maxCountInput').val()
-		if(value){
-			loadMaxProblemOfCount(value, problemZone)
-		}
-	})
+	// $('#maxCountButton').click(function(){
+	// 	value = $('#maxCountInput').val()
+	// 	if(value){
+	// 		loadMaxProblemOfCount(value, problemZone)
+	// 	}
+	// })
 
-	$('#minCountButton').click(function(){
-		value = $('#minCountInput').val()
-		if(value){
-			loadMinProblemOfCount(value, problemZone)
-		}
-	})
 
-	$('#multiplyCountButton').click(function(){
-		value = $('#multiplyCountInput').val()
-		if(value){
-			loadMultiplyProblemsOfCount(value, problemZone)
-		}
-	})
+	function createControl(placeholder, loadingFunction){
+		var addingProblem = $('<div>', {class: "input-group"})
+		var number = $('<input>').attr({type:'number',
+	                                 class: 'form-control',
+	                                 placeholder: placeholder})
+		var addingButtonSpan = $('<span>', {class: 'input-group-btn'})
+		var button = $('<button>', {class: "btn btn-secondary",
+										 type: "button",
+										 id: "sharon"})
+		button.text("Add")
+		addingButtonSpan.append(button)
 
-	$('#applicationCountButton').click(function(){
-		value = $('#applicationCountInput').val()
-		if(value){
-			loadApplicationProblem(value, problemZone)
-		}
-	})
+		addingProblem.append(number)
+		addingProblem.append(addingButtonSpan)
+		button.click(function(){
+			loadingFunction(number.val(), problemZone)
+		})
+		return addingProblem
+	}
+
+
+	$('#button-zone').append(createControl('求最大值', loadMaxProblemOfCount))
+	$('#button-zone').append(createControl('求最小值', loadMinProblemOfCount))
+	$('#button-zone').append(createControl('乘法题', loadMultiplyProblemsOfCount))
+	$('#button-zone').append(createControl('一元一次方程', loadLinearEquationWithOneUnknown))
+	$('#button-zone').append(createControl('应用题', loadApplicationProblem))
+
+
+
 
 	$('#linerEquationButton').click(function(){
 		value = $('#linerEquationInput').val()

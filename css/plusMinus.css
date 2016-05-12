@@ -15,7 +15,6 @@
 
 .problem{
 	font-size: 15px
-
 }
 
 .jumbotron{
@@ -38,6 +37,13 @@
 
 .input-group{
 	margin-top: 10px
+}
+
+canvas{
+	margin-top: 40px
+}
+#problemZone{
+	margin-left: 40px
 }
 
 i{

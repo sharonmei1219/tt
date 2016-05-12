@@ -30,8 +30,6 @@ function formatMinTypeSubSecondOprand(less, greater){
 	return greater.toString() + ' - ____ < ' + less.toString()
 }
 
-
-
 maxFormators = [formatMaxTypeAddFirstOprand, 
 		     formatMaxTypeAddSecondOprand,
 		     formatMaxTypeSubFirstOprand,
