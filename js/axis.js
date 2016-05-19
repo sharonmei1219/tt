@@ -15,11 +15,13 @@ function NumberAxis(start, end, canvasCtx){
 			canvasCtx.moveTo(xp, 50);
 			canvasCtx.lineTo(xp, 47);
 			canvasCtx.stroke()
+
 			if ((x % 5) == 0){
 				canvasCtx.moveTo(xp, 50);
 				canvasCtx.lineTo(xp, 44);
 				canvasCtx.stroke()
 			}
+
 			if ((x % 10) == 0){
 				canvasCtx.moveTo(xp, 56);
 				canvasCtx.lineTo(xp, 44);
@@ -91,9 +93,9 @@ function Axis(startInput, endInput){
 }
 
 function loadAxisProblem(count, problemZone){
-	pv = new ProblemView(problemZone, '数射线', 'LG')
+	pv = new ProblemView(problemZone, '数射线', 'LG-NARROW')
 	pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(4).withMarkProblem(3).build())
-	pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(1).withMarkProblem(2).build())
-	pv.putProblemHtmlElement((new Axis(36, 84)).withTellProblem(2).withMarkProblem(4).build())
-	pv.putProblemHtmlElement((new Axis(22, 87)).withTellProblem(5).withMarkProblem(5).build())
+	pv.putProblemHtmlElement((new Axis(0, 100)).withTellProblem(6).withMarkProblem(4).build())
+	pv.putProblemHtmlElement((new Axis(36, 84)).withTellProblem(5).withMarkProblem(2).build())
+	pv.putProblemHtmlElement((new Axis(22, 87)).withTellProblem(3).withMarkProblem(4).build())
 }

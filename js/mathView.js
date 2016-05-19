@@ -32,11 +32,11 @@ function getRandomNumbersWithMinGap(start, end, count, gap){
 
 function ProblemView(zone, title, viewClass){
 
-	if(viewClass == "MD"){
+	if(viewClass == "MD" || viewClass == "MD-NARROW"){
 		columnCount = 2
-	}else if(viewClass == "LG"){
+	}else if(viewClass == "LG" || viewClass == "LG-NARROW"){
+		console.log(viewClass)
 		columnCount = 1
-		viewClass = "LG"
 	}else{
 		columnCount = 4
 		viewClass = "SM"
@@ -71,6 +71,7 @@ function ProblemView(zone, title, viewClass){
 	}
 
 	this.putProblemHtmlElement = function(elem){
+		console.log(viewClass)
 		problem = $("<div>", {class: "problem" + viewClass}).append(elem)
 		columnId = "#" + getColumnId(columnIndex)
 		_section.find(columnId).append(problem)
@@ -78,7 +79,7 @@ function ProblemView(zone, title, viewClass){
 	}
 }
 
-function ctr(placeholder, loadingFunction){
+function ctr(placeholder, loadingFunction, configureCtrlID){
 	var addingProblem = $('<div>', {class: "input-group"})
 	var number = $('<input>').attr({type:'number',
                                  class: 'form-control',
@@ -95,7 +96,46 @@ function ctr(placeholder, loadingFunction){
 	button.click(function(){
 		loadingFunction(number.val(), problemZone)
 	})
+
+	if(configureCtrlID){
+		console.log(configureCtrlID)
+		var configureSpan = $('<span>', {class: 'input-group-btn'})
+		var configureExpandButton = $('<button>', {class: "btn btn-secondary btn-info",
+									 type: "button",
+									 "data-toggle":"collapse",
+									 "data-target": "#" + configureCtrlID})
+		configureExpandButton.text("...")
+		configureSpan.append(configureExpandButton)
+		addingProblem.append(configureSpan)
+	}
+
 	return addingProblem
+}
+
+function clockConfig(){
+	var configCtrl = $('<div>', {class: "collapse", id: "configClock"})
+	var gapControl = $('<div>', {class: "checkbox"})
+	configCtrl.append(gapControl)
+
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confMinZero" value="">分钟不变</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confMinNoCarryOver" value="" checked="checked">分钟不进位</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confMinOnClock" value="">分钟到整点</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confMinCarryOver" value="">分钟进位整点</label>'))
+
+	gapControl = $('<div>', {class: "checkbox"})
+	configCtrl.append(gapControl)
+
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confHourZero" value="">时钟不变</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confHourNoCarryOver" value="" checked="checked">时钟不进位</label>'))
+
+	gapControl = $('<div>', {class: "checkbox"})
+	configCtrl.append(gapControl)
+
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confTimeFormatAdd" value="" checked="checked">之后</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confTimeFormatSub" value="" checked="checked">之前</label>'))
+
+
+	return configCtrl
 }
 
 $(function(){
@@ -116,11 +156,11 @@ $(function(){
 			loadNormalProblemsOfCount(value, problemZone)
 		}
 	})
-
-	
 	buttonZone.append(ctr('求最大值', loadMaxProblemOfCount))
 	buttonZone.append(ctr('求最小值', loadMinProblemOfCount))
 	buttonZone.append(ctr('数射线', loadAxisProblem))
+	buttonZone.append(ctr('时间', loadClockProblems, "configClock"))
+	buttonZone.append(clockConfig())
 	buttonZone.append(ctr('乘法题', loadMultiplyProblemsOfCount))
 	buttonZone.append(ctr('一元一次方程', loadLinearEquationWithOneUnknown))
 	buttonZone.append(ctr('应用题', loadApplicationProblem))
