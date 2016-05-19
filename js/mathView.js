@@ -32,7 +32,7 @@ function getRandomNumbersWithMinGap(start, end, count, gap){
 
 function ProblemView(zone, title, viewClass){
 
-	if(viewClass == "MD" || viewClass == "MD-NARROW"){
+	if(viewClass == "MD" || viewClass == "MD-NARROW" || viewClass == "MD-SMALL-GAP"){
 		columnCount = 2
 	}else if(viewClass == "LG" || viewClass == "LG-NARROW"){
 		console.log(viewClass)
@@ -133,6 +133,7 @@ function clockConfig(){
 
 	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confTimeFormatAdd" value="" checked="checked">之后</label>'))
 	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confTimeFormatSub" value="" checked="checked">之前</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="confTimeFormatGap" value="">时长</label>'))
 
 
 	return configCtrl

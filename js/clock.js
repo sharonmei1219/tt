@@ -76,10 +76,20 @@ function time(hour, min){
 	this.min = min
 	this.plus = function(gap){
 		m = (min + gap.min)%60
-		c = (min + gap.min)/60
+		c = Math.floor((min + gap.min)/60)
 		h = hour + gap.hour + c
 		return new time(h, m)
 	}
+
+	this.toString = function(){
+		if(min >= 10){
+			minStr = min.toString()
+		}if(min < 10){
+			minStr = "0" + min.toString()
+		}
+		return hour.toString() + ":" + minStr
+	}
+
 }
 
 function clockProblem(in_min, in_max, in_gap){
@@ -97,6 +107,8 @@ function newProb(hGap, mGap){
 
 function formatGreaterProb(prob){
 	var result = $('<div>')
+	var startDiv = $('<div>', {class:"col-xs-5"})
+	var endDiv = $('<div>', {class:"col-xs-5"})
 	result.append((new clockTime(prob.min.hour, prob.min.min)).view())
 	result.append('<p>现在时间是:_____________</p>')
 	result.append('<p>'+ intervalToString(prob.gap.hour, prob.gap.min) + '之后时间是:_____________</p>')
@@ -111,9 +123,17 @@ function formatLessProb(prob){
 	return result
 }
 
+function formatGapProb(prob){
+	var result = $('<div>')
+	result.append('<p>从' + prob.min.toString() + '到' + prob.max.toString() + '经过了多长时间？</p>')
+	result.append('<p>___________________</p>')
+	return result
+}
+
 function problemGen(hGap, mGap, formator){
 	this.getProblem = function(){
 		prob = newProb(hGap, mGap)
+		console.log(prob)
 		elem = formator(prob)
 		console.log(elem)
 		return elem
@@ -182,6 +202,9 @@ function readConfiguration(){
 	if($("#confTimeFormatSub").is(':checked')){
 		formattorList.push(formatLessProb)
 	}
+	if($("#confTimeFormatGap").is(':checked')){
+		formattorList.push(formatGapProb)
+	}
 
 	for(var iMin = 0; iMin < minGapList.length; iMin ++){
 		for(var iHour = 0; iHour < hourGapList.length; iHour ++){
@@ -195,7 +218,7 @@ function readConfiguration(){
 }
 
 function loadClockProblems(count, problemZone){
-	pv = new ProblemView(problemZone, '填写时间', 'MD-NARROW')
+	pv = new ProblemView(problemZone, '填写时间', 'MD-SMALL-GAP')
 	for(var i = 0; i < count; i++){
 		var config =  pickRamdomItemInList(readConfiguration())
 		pv.putProblemHtmlElement(config.getProblem())
