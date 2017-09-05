@@ -77,14 +77,48 @@
           opacity: .5;
       }
 
+      h1{font-family: "Roboto", sans-serif}
+
+      .text.center{text-align:center}
+      .blog-title{font-size:4rem; font-family:'Arial'; font-weight:700; margin-bottom:0; }
+      .blog-description{font-size:2rem; font-family:'Arial'; font-weight:700; margin-bottom:0;}
+      .padding,.pagination{padding:4rem}
+      .margin-left{margin-left: 4rem}
+
+      .typing-progress {
+        list-style: none;
+        font-size: 1.4em;
+      }
+      .typing-progress li {
+        border-left: 0.2em solid black;
+        padding: 0 0 0.1em 1em;
+        position: relative;
+      }
+      .typing-progress li::before {
+        content: "•";
+        font-size: 2.5em;
+        position: absolute;
+        left: -0.21em;
+        top: -0.45em;
+      }
+
     </style>
 </head>
 
 <body>
-	<h1> This is a Heading</h1>
-	<p> This is a paragraph</p>
+  <div class="row text center padding">
+      <div class="col-lg-offset-2 col-lg-6  col-md-offset-3 col-md-7">
+      <div class = "blog-title">
+    	<p>Typing For Fun</p>
+      </div>
+      <div class = "blog-description">
+    	<p>A game to guide you to get familiar to keyboard</p>
+      </div>
+      </div>
+  </div>
   <div class="row">
-    <div id = "controlZone" class="col-lg-2">
+    <div id = "controlZone" class="col-lg-2 col-md-3">
+      <div id="optional-area" class="margin-left">
         <h3>Font Size</h3>
         <div class="radio">
             <label style="font-size: 1.4em">
@@ -107,8 +141,24 @@
                 Small
             </label>
         </div>
+        </div>
+        <br>
+        <div id="progress-area" class="margin-left">
+          <h3>Progress</h3>
+          <!-- <ol class="progress"> -->
+          <ol class="typing-progress">
+              <li>Mid-Row Slow</li>
+              <li>Mid-Row Fast</li>
+              <li>Up-Row Slow</li>
+              <li>Up-Row Fast</li>
+              <li>Down-Row Slow</li>
+              <li>Down-Row Fast</li>
+              <li>Altogether Slow</li>
+              <li>Altogether Fast</li>
+          </ol>
+        </div>
     </div>
-    <div id="gameZone" class="col-lg-8" >
+    <div id="gameZone" class="col-lg-6 col-md-7" >
     </div>
     <div id="statusZone" class="col-lg-2">
       <p id="missed-count" style="font-size: 30px">0 missed<p>
@@ -119,109 +169,78 @@
 
     <script   src="https://code.jquery.com/jquery-2.2.0.min.js"   integrity="sha256-ihAoc6M/JPfrIiIeayPE9xjin4UWjsx2mjW/rtmxLM4="   crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.min.js" integrity="sha256-mFypf4R+nyQVTrc8dBd0DKddGB5AedThU73sLmLWdc0=" crossorigin="anonymous"></script>
-
+    <script src="js/ttModal.js"></script>
+    <script src="js/ttView.js"></script>
     <script type="text/javascript">
-        function getRandomInt(min, max) {
-          return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
 
-        function CandidateList(candidateList){
-          this.get = function(self){
-            rand = getRandomInt(0, candidateList.length - 1)
-            candidate = candidateList[rand]
-            candidateList.splice(rand, 1)
-            return candidate
-          }
+    var targetList = new TargetList()
+    var ann = new Annimator(6000)
+    var candidateList = new CandidateList(row2Keys)
 
-          this.restore = function(charactor){
-            candidateList.push(charactor)
-          }
-        }
-
-        function Annimator(){
-            var zone = $("#gameZone")
-            this.add = function(element, doneFunction){
-              element.css({top:0, left: getRandomInt(0, zone.width()), position: 'absolute', 'font-size': fontSizeSetting})
-              zone.append(element)
-              element.animate({ "top": "+=580px" }, 6000, "linear", doneFunction);
-            }
-        }
-        
-        var row2Keys = ['a', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 's',';']
-        var row1Keys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o','p']
-        var row3Keys = ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.','/']
-        var allKeys = row2Keys + row3Keys + row1Keys
-        var fontSizeSetting = '60px'
-
-
-        var cl = new CandidateList(row2Keys)
+    function TargetList(){
         var tl = []
-        var ann = new Annimator()
 
-        function funForFallingOutOfScreen(target){
-          return function(){
+        this.remove = function(target){
             var index = tl.indexOf(target)
             tl.splice(index, 1)
-            cl.restore(target.charactor)
             target.element.remove()
-            missedCount ++;
-            $("#missed-count").html("<p>" + missedCount + " missed</p>")
-          }
         }
 
-        function addCharactorInScreen(){
-          fallingCharCount ++;
-          var charactor = cl.get()
-          var target = {"charactor": charactor,
-                        "element": $('<p class="object">' + charactor + '</p>')}
-          tl.push(target)
-          ann.add(target.element, funForFallingOutOfScreen(target))
-          if (fallingCharCount == totalCount) {
-            clearInterval(charactorLoop)
-            gameDone()
-          }
-        }
-
-        function gameDone(){
-          alert('gameDone')
-          $("#statusZone").append("<p style='font-size: 30px>" + Math.floor((totalCount - missedCount)/totalCount * 100) + "% hit")
-        }
-
-        function gameStart(){
-          totalCount = 30
-          missedCount = 0
-          fallingCharCount = 0
-        }
-
-        function keyIn(charactor){
+        this.find = function(charactor){
             function match(target){
                 return target.charactor == charactor
             }
+            return tl.find(match)
+        }
 
-            var matchedTarget = tl.find(match)
-            if (matchedTarget == undefined){
-              return
-            }
+        this.add = function(target){
+          tl.push(target)
+        }
+    }
 
-            matchedTarget.element.stop()
-            matchedTarget.element.effect("explode", {pieces: 4}, "slow")
-            matchedTarget.element.remove()
+    function funForFallingOutOfScreen(target){
+      return function(){
+        candidateList.restore(target.charactor)
+        targetList.remove(target)
+        var count = incMissedCount()
+        updateMissedCount(count)
+        if(allHitOrMissed()){
+          alert("gameDone")
+          clearInterval(charactorLoop)
+        }
+      }
+    }
 
-            var index = tl.indexOf(matchedTarget)
-            tl.splice(index, 1)
-            cl.restore(matchedTarget.charactor)
-          }
+    function addCharactorInScreen(){
+      var charactor = candidateList.get()
+      var target = {"charactor": charactor,
+                    "element": charactorElementInScreen(charactor)}
 
-      $(document).keypress(function(e){
-        var inputCharactor =  String.fromCharCode(e.keyCode)
-        keyIn(inputCharactor)
-      })
+      targetList.add(target)
+      ann.add(target.element, funForFallingOutOfScreen(target))
+    }
 
+    function keyIn(charactor){
+        matchedTarget = targetList.find(charactor)
+        if (matchedTarget == undefined){
+          return
+        }
+        elementHit(matchedTarget.element)
+        candidateList.restore(matchedTarget.charactor)
+        targetList.remove(matchedTarget)
+        incHitCount()
+        if(allHitOrMissed()){
+        alert("gameDone")
+        clearInterval(charactorLoop)
+        }
+      }
 
-      var fallingCharCount = 0;
-      var totalCount = 30;
-      var missedCount = 0;
-      var charactorLoop = setInterval(addCharactorInScreen, 1000)
+    $(document).keypress(function(e){
+      var inputCharactor =  String.fromCharCode(e.keyCode)
+      keyIn(inputCharactor)
+    })
+
+    var charactorLoop = setInterval(addCharactorInScreen, 1000)
 
     </script>
 </html>
