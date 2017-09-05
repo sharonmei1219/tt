@@ -35,11 +35,9 @@ function ProblemView(zone, title, viewClass){
 	if(viewClass == "MD" || viewClass == "MD-NARROW" || viewClass == "MD-SMALL-GAP"){
 		columnCount = 2
 	}else if(viewClass == "LG" || viewClass == "LG-NARROW"){
-		console.log(viewClass)
 		columnCount = 1
 	}else{
 		columnCount = 4
-		viewClass = "SM"
 	}
 
 	function getColumnId(columnIndex){
@@ -139,6 +137,17 @@ function clockConfig(){
 	return configCtrl
 }
 
+function distanceConfig(){
+	var configCtrl = $('<div>', {class: "collapse", id: "configDistance"})
+	var gapControl = $('<div>', {class: "checkbox"})
+	configCtrl.append(gapControl)
+
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="oneStepEasy" value="">一步</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="oneStepWithInterferer" value="" checked="checked">一步有干扰</label>'))
+	gapControl.append($('<label class="checkbox"><input type="checkbox" id="multiStep" value="">分步</label>'))
+	return configCtrl
+}
+
 $(function(){
 	problemZone = $('#customized-problem-zone')
 	buttonZone = $('#button-zone')
@@ -160,6 +169,9 @@ $(function(){
 	buttonZone.append(ctr('求最大值', loadMaxProblemOfCount))
 	buttonZone.append(ctr('求最小值', loadMinProblemOfCount))
 	buttonZone.append(ctr('数射线', loadAxisProblem))
+	buttonZone.append(ctr('距离', loadSectionProblem, "configDistance"))
+	buttonZone.append(distanceConfig())
+	buttonZone.append(ctr('距离和位置', loadPointSectionProblem))
 	buttonZone.append(ctr('时间', loadClockProblems, "configClock"))
 	buttonZone.append(clockConfig())
 	buttonZone.append(ctr('乘法题', loadMultiplyProblemsOfCount))

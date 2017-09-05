@@ -34,6 +34,13 @@ var bounds = {
 		sum_units: [0, 8],
 		op_tens: function(sumTen, sumUnit){return [0, sumTen - 1]},
 		op_unit: function(sumTen, sumUnit){return [sumUnit + 1, 9]}
+	},
+
+	r200:{
+		sum_tens: [10, 19],
+		sum_units: [0, 8],
+		op_tens: function(sumTen, sumUnit){return [sumTen - 10 , 9]},
+		op_unit: function(sumTen, sumUnit){return [sumUnit + 1, 9]}
 	}
 }
 
@@ -138,6 +145,9 @@ function operantsSetting(){
 		}
 	}
 
+	if($('#lessThan200').is(':checked')){
+		boundsList.push(bounds.r200)
+	}
 	return boundsList
 }
 
@@ -152,7 +162,12 @@ function problemFormatSetting(){
 }
 
 function loadNormalProblemsOfCount(count, problemZone){
-	pv = new ProblemView(problemZone, '计算')
+	if($('#vertical-form').is(':checked')){
+		
+		pv = new ProblemView(problemZone, '计算', 'SM-WIDE-GAP')	
+	}else{
+		pv = new ProblemView(problemZone, '计算')	
+	}
 
 	opList = operatorSetting()
 	boundList = operantsSetting()

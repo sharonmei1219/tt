@@ -89,7 +89,6 @@ function time(hour, min){
 		}
 		return hour.toString() + ":" + minStr
 	}
-
 }
 
 function clockProblem(in_min, in_max, in_gap){

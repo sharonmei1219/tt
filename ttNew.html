@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://use.fontawesome.com/0a3c6e242d.js"></script>
+    <style>
+      #gameZone{
+        background: black;
+        height: 600px;
+        position: relative;
+      }
+      .object{
+        color: white;
+        font-size: 20px
+      }
+
+      .object typed{
+        color: green;
+      }
+      .checkbox label:after, 
+      .radio label:after {
+          content: '';
+          display: table;
+          clear: both;
+      }
+
+      .checkbox .cr,
+      .radio .cr {
+          position: relative;
+          display: inline-block;
+          border: 1px solid #a9a9a9;
+          border-radius: .25em;
+          width: 1.3em;
+          height: 1.3em;
+          float: left;
+          margin-right: .5em;
+      }
+
+      .radio .cr {
+          border-radius: 50%;
+      }
+
+      .checkbox .cr .cr-icon,
+      .radio .cr .cr-icon {
+          position: absolute;
+          font-size: .8em;
+          line-height: 0;
+          top: 50%;
+          left: 20%;
+      }
+
+      .radio .cr .cr-icon {
+          margin-left: 0.04em;
+      }
+
+      .checkbox label input[type="checkbox"],
+      .radio label input[type="radio"] {
+          display: none;
+      }
+
+      .checkbox label input[type="checkbox"] + .cr > .cr-icon,
+      .radio label input[type="radio"] + .cr > .cr-icon {
+          transform: scale(3) rotateZ(-20deg);
+          opacity: 0;
+          transition: all .3s ease-in;
+      }
+
+      .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+      .radio label input[type="radio"]:checked + .cr > .cr-icon {
+          transform: scale(1) rotateZ(0deg);
+          opacity: 1;
+      }
+
+      .checkbox label input[type="checkbox"]:disabled + .cr,
+      .radio label input[type="radio"]:disabled + .cr {
+          opacity: .5;
+      }
+
+    </style>
+</head>
+
+<body>
+	<h1> This is a Heading</h1>
+	<p> This is a paragraph</p>
+  <div class="row">
+    <div id = "controlZone" class="col-lg-2">
+        <h3>Font Size</h3>
+        <div class="radio">
+            <label style="font-size: 1.4em">
+                <input type="radio" name="o4" value="" onclick="fontSizeSetting = '60px'">
+                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                Big
+            </label>
+        </div>
+        <div class="radio">
+            <label style="font-size: 1.4em">
+                <input type="radio" name="o4" value="" checked onclick="fontSizeSetting = '40px'">
+                <span class="cr"> <i class="cr-icon fa fa-circle"></i></span>
+                Normal
+            </label>
+        </div>
+        <div class="radio">
+            <label style="font-size: 1.4em">
+                <input type="radio" name="o4" value="" onclick="fontSizeSetting = '30px'">
+                <span class="cr"><i class="cr-icon fa fa-circle"></i></span>
+                Small
+            </label>
+        </div>
+    </div>
+    <div id="gameZone" class="col-lg-8" >
+    </div>
+    <div id="statusZone" class="col-lg-2">
+      <p id="missed-count" style="font-size: 30px">0 missed<p>
+    </div>
+  </div>
+
+</body>
+
+    <script   src="https://code.jquery.com/jquery-2.2.0.min.js"   integrity="sha256-ihAoc6M/JPfrIiIeayPE9xjin4UWjsx2mjW/rtmxLM4="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0-rc.1/jquery-ui.min.js" integrity="sha256-mFypf4R+nyQVTrc8dBd0DKddGB5AedThU73sLmLWdc0=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        function getRandomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function CandidateList(candidateList){
+          this.get = function(self){
+            rand = getRandomInt(0, candidateList.length - 1)
+            candidate = candidateList[rand]
+            candidateList.splice(rand, 1)
+            return candidate
+          }
+
+          this.restore = function(charactor){
+            candidateList.push(charactor)
+          }
+        }
+
+        function Annimator(){
+            var zone = $("#gameZone")
+            this.add = function(element, doneFunction){
+              element.css({top:0, left: getRandomInt(0, zone.width()), position: 'absolute', 'font-size': fontSizeSetting})
+              zone.append(element)
+              element.animate({ "top": "+=580px" }, 6000, "linear", doneFunction);
+            }
+        }
+        
+        var row2Keys = ['a', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 's',';']
+        var row1Keys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o','p']
+        var row3Keys = ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.','/']
+        var allKeys = row2Keys + row3Keys + row1Keys
+        var fontSizeSetting = '60px'
+
+
+        var cl = new CandidateList(row2Keys)
+        var tl = []
+        var ann = new Annimator()
+
+        function funForFallingOutOfScreen(target){
+          return function(){
+            var index = tl.indexOf(target)
+            tl.splice(index, 1)
+            cl.restore(target.charactor)
+            target.element.remove()
+            missedCount ++;
+            $("#missed-count").html("<p>" + missedCount + " missed</p>")
+          }
+        }
+
+        function addCharactorInScreen(){
+          fallingCharCount ++;
+          var charactor = cl.get()
+          var target = {"charactor": charactor,
+                        "element": $('<p class="object">' + charactor + '</p>')}
+          tl.push(target)
+          ann.add(target.element, funForFallingOutOfScreen(target))
+          if (fallingCharCount == totalCount) {
+            clearInterval(charactorLoop)
+            gameDone()
+          }
+        }
+
+        function gameDone(){
+          alert('gameDone')
+          $("#statusZone").append("<p style='font-size: 30px>" + Math.floor((totalCount - missedCount)/totalCount * 100) + "% hit")
+        }
+
+        function gameStart(){
+          totalCount = 30
+          missedCount = 0
+          fallingCharCount = 0
+        }
+
+        function keyIn(charactor){
+            function match(target){
+                return target.charactor == charactor
+            }
+
+            var matchedTarget = tl.find(match)
+            if (matchedTarget == undefined){
+              return
+            }
+
+            matchedTarget.element.stop()
+            matchedTarget.element.effect("explode", {pieces: 4}, "slow")
+            matchedTarget.element.remove()
+
+            var index = tl.indexOf(matchedTarget)
+            tl.splice(index, 1)
+            cl.restore(matchedTarget.charactor)
+          }
+
+      $(document).keypress(function(e){
+        var inputCharactor =  String.fromCharCode(e.keyCode)
+        keyIn(inputCharactor)
+      })
+
+
+      var fallingCharCount = 0;
+      var totalCount = 30;
+      var missedCount = 0;
+      var charactorLoop = setInterval(addCharactorInScreen, 1000)
+
+    </script>
+</html>
