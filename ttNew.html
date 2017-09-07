@@ -4,110 +4,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/0a3c6e242d.js"></script>
-    <style>
-      #gameZone{
-        background: black;
-        height: 600px;
-        position: relative;
-      }
-      .object{
-        color: white;
-        font-size: 20px
-      }
-
-      .object typed{
-        color: green;
-      }
-      .checkbox label:after, 
-      .radio label:after {
-          content: '';
-          display: table;
-          clear: both;
-      }
-
-      .checkbox .cr,
-      .radio .cr {
-          position: relative;
-          display: inline-block;
-          border: 1px solid #a9a9a9;
-          border-radius: .25em;
-          width: 1.3em;
-          height: 1.3em;
-          float: left;
-          margin-right: .5em;
-      }
-
-      .radio .cr {
-          border-radius: 50%;
-      }
-
-      .checkbox .cr .cr-icon,
-      .radio .cr .cr-icon {
-          position: absolute;
-          font-size: .8em;
-          line-height: 0;
-          top: 50%;
-          left: 20%;
-      }
-
-      .radio .cr .cr-icon {
-          margin-left: 0.04em;
-      }
-
-      .checkbox label input[type="checkbox"],
-      .radio label input[type="radio"] {
-          display: none;
-      }
-
-      .checkbox label input[type="checkbox"] + .cr > .cr-icon,
-      .radio label input[type="radio"] + .cr > .cr-icon {
-          transform: scale(3) rotateZ(-20deg);
-          opacity: 0;
-          transition: all .3s ease-in;
-      }
-
-      .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
-      .radio label input[type="radio"]:checked + .cr > .cr-icon {
-          transform: scale(1) rotateZ(0deg);
-          opacity: 1;
-      }
-
-      .checkbox label input[type="checkbox"]:disabled + .cr,
-      .radio label input[type="radio"]:disabled + .cr {
-          opacity: .5;
-      }
-
-      h1{font-family: "Roboto", sans-serif}
-
-      .text.center{text-align:center}
-      .blog-title{font-size:4rem; font-family:'Arial'; font-weight:700; margin-bottom:0; }
-      .blog-description{font-size:2rem; font-family:'Arial'; font-weight:700; margin-bottom:0;}
-      .padding,.pagination{padding:4rem}
-      .margin-left{margin-left: 4rem}
-
-      .typing-progress {
-        list-style: none;
-        font-size: 1.4em;
-      }
-      .typing-progress li {
-        border-left: 0.2em solid black;
-        padding: 0 0 0.1em 1em;
-        position: relative;
-      }
-      .typing-progress li::before {
-        content: "•";
-        font-size: 2.5em;
-        position: absolute;
-        left: -0.21em;
-        top: -0.45em;
-      }
-
-    </style>
+    <link href="css/tt.css" rel="stylesheet"> <!-- • -->
 </head>
 
 <body>
   <div class="row text center padding">
-      <div class="col-lg-offset-2 col-lg-6  col-md-offset-3 col-md-7">
+      <div class="col-lg-offset-2 col-lg-8  col-md-offset-2 col-md-8">
       <div class = "blog-title">
     	<p>Typing For Fun</p>
       </div>
@@ -117,7 +19,7 @@
       </div>
   </div>
   <div class="row">
-    <div id = "controlZone" class="col-lg-2 col-md-3">
+    <div id = "controlZone" class="col-lg-2 col-md-2">
       <div id="optional-area" class="margin-left">
         <h3>Font Size</h3>
         <div class="radio">
@@ -145,7 +47,6 @@
         <br>
         <div id="progress-area" class="margin-left">
           <h3>Progress</h3>
-          <!-- <ol class="progress"> -->
           <ol class="typing-progress">
               <li>Mid-Row Slow</li>
               <li>Mid-Row Fast</li>
@@ -158,7 +59,7 @@
           </ol>
         </div>
     </div>
-    <div id="gameZone" class="col-lg-6 col-md-7" >
+    <div id="gameZone" class="col-lg-8 col-md-8" >
     </div>
     <div id="statusZone" class="col-lg-2">
       <p id="missed-count" style="font-size: 30px">0 missed<p>
@@ -173,74 +74,133 @@
     <script src="js/ttView.js"></script>
     <script type="text/javascript">
 
-    var targetList = new TargetList()
-    var ann = new Annimator(6000)
-    var candidateList = new CandidateList(row2Keys)
+    function Round(roundCount, level){
+      var targetList = new TargetList()
+      var ann = new Annimator(6000, roundCount, level)
+      var candidateList = new CandidateList(row2Keys)
 
-    function TargetList(){
-        var tl = []
+      var totalCount = 7;
+      var missedCount = 0;
+      var hitCount = 0;
+      var fallingCount = 0;
 
-        this.remove = function(target){
-            var index = tl.indexOf(target)
-            tl.splice(index, 1)
-            target.element.remove()
+      var charactorLoop;
+
+      function incHitCount(){
+        hitCount ++;
+        return hitCount;
+      }
+
+      function incMissedCount(){
+        missedCount ++;
+        return missedCount;
+      }
+
+      function allHitOrMissed(){
+        return (hitCount + missedCount) == totalCount
+      }
+
+      function incFallingCount(){
+        fallingCount ++
+        return fallingCount == totalCount
+      }
+
+      function TargetList(){
+          var tl = []
+
+          this.remove = function(target){
+              var index = tl.indexOf(target)
+              tl.splice(index, 1)
+              target.element.remove()
+          }
+
+          this.find = function(charactor){
+              function match(target){
+                  return target.charactor == charactor
+              }
+              return tl.find(match)
+          }
+
+          this.add = function(target){
+            tl.push(target)
+          }
+      }
+
+      function funForFallingOutOfScreen(target){
+        return function(){
+          candidateList.restore(target.charactor)
+          targetList.remove(target)
+          var count = incMissedCount()
+          updateMissedCount(count)
+          if(allHitOrMissed()){
+            ann.gameDone(hitCount, missedCount, score, function(){$(document).trigger("tt-gameStart")})
+            
+          }
         }
+      }
 
-        this.find = function(charactor){
-            function match(target){
-                return target.charactor == charactor
-            }
-            return tl.find(match)
-        }
+      function addCharactorInScreen(){
+        var charactor = candidateList.get()
+        var target = {"charactor": charactor,
+                      "element": charactorElementInScreen(charactor)}
 
-        this.add = function(target){
-          tl.push(target)
-        }
-    }
-
-    function funForFallingOutOfScreen(target){
-      return function(){
-        candidateList.restore(target.charactor)
-        targetList.remove(target)
-        var count = incMissedCount()
-        updateMissedCount(count)
-        if(allHitOrMissed()){
-          alert("gameDone")
+        targetList.add(target)
+        ann.add(target.element, funForFallingOutOfScreen(target))
+        if(incFallingCount()){
           clearInterval(charactorLoop)
         }
       }
-    }
 
-    function addCharactorInScreen(){
-      var charactor = candidateList.get()
-      var target = {"charactor": charactor,
-                    "element": charactorElementInScreen(charactor)}
-
-      targetList.add(target)
-      ann.add(target.element, funForFallingOutOfScreen(target))
-    }
-
-    function keyIn(charactor){
-        matchedTarget = targetList.find(charactor)
-        if (matchedTarget == undefined){
-          return
-        }
-        elementHit(matchedTarget.element)
-        candidateList.restore(matchedTarget.charactor)
-        targetList.remove(matchedTarget)
-        incHitCount()
-        if(allHitOrMissed()){
-        alert("gameDone")
-        clearInterval(charactorLoop)
-        }
+      function score(){
+        return Math.floor(hitCount*100/totalCount)
       }
 
-    $(document).keypress(function(e){
-      var inputCharactor =  String.fromCharCode(e.keyCode)
-      keyIn(inputCharactor)
-    })
+      function keyIn(charactor){
+          matchedTarget = targetList.find(charactor)
+          if (matchedTarget == undefined){
+            return
+          }
+          elementHit(matchedTarget.element)
+          candidateList.restore(matchedTarget.charactor)
+          targetList.remove(matchedTarget)
+          incHitCount()
+          if(allHitOrMissed()){
+            console.log("in keyIn function score is: " + score())
+            ann.gameDone(hitCount, missedCount, score(), function(){$(document).trigger("tt-gameStart")})
+          }
+        }
 
-    var charactorLoop = setInterval(addCharactorInScreen, 1000)
+      function roundStart(){
+        $(document).keypress(function(e){
+          var inputCharactor =  String.fromCharCode(e.keyCode)
+          keyIn(inputCharactor)
+        })
+
+        charactorLoop = setInterval(addCharactorInScreen, 1000)
+      }
+
+      ann.showGameStartHint()
+
+      $(document).keypress(function(e){
+        $(document).unbind("keypress")
+        ann.dismissGameStartHint()
+        roundStart()
+      })
+
+      this.upgrade = function(){
+        console.log(score())
+        return score() > 80
+      }
+    }
+
+    var roundCount = 0
+    var level = 0
+
+    $(document).on("tt-gameStart", function(){
+      var round = new Round(roundCount, level)
+      roundCount ++
+    })
+    $(document).trigger("tt-gameStart")
 
     </script>
 </html>

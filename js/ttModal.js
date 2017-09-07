@@ -20,22 +20,6 @@ function CandidateList(candidateList){
   }
 }
 
-var totalCount = 15;
-var missedCount = 0;
-var hitCount = 0;
 
-function incHitCount(){
-	hitCount ++;
-	return hitCount;
-}
-
-function incMissedCount(){
-	missedCount ++;
-	return missedCount;
-}
-
-function allHitOrMissed(){
-	return (hitCount + missedCount) == totalCount
-}
 
 
