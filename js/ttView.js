@@ -45,3 +45,7 @@ function elementHit(element){
 	element.stop()
 	element.effect("explode", {pieces: 4}, "slow")
 }
+
+function viewLevelUp(level){
+	$("#level-" + level).addClass("level-complete")
+}
