@@ -10,6 +10,7 @@ function Annimator(fallingSpeed, roundCount, level){
     }
 
     this.gameDone = function(hitCount, missedCount, score, afterGameDone){
+
     	var scoreDisplay = $("<div></div>")
     	scoreDisplay.css({top:0, width:zone.width(), position:'absolute', background: '#DCDCDC', 'text-align': 'center'})
     	scoreDisplay.append($('<h3>' + hitCount + ' hitted; '+ missedCount + ' missed</h3>'))

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/0a3c6e242d.js"></script>
-    <link href="css/tt.css" rel="stylesheet"> <!-- • -->
+    <link href="css/tt.css" rel="stylesheet">
 </head>
 
 <body>
@@ -61,6 +61,10 @@
     </div>
     <div id="gameZone" class="col-lg-8 col-md-8" >
     </div>
+<div class="pyro">
+  <div class="before"></div>
+  <div class="after"></div>
+</div>
     <div id="statusZone" class="col-lg-2">
       <p id="missed-count" style="font-size: 30px">0 missed<p>
     </div>
@@ -77,13 +81,13 @@
     function Round(roundCount, level){
       var levels=[
         {'speed': 8000, 'cList': row2Keys},
-        {'speed': 4000, 'cList': row2Keys},
+        {'speed': 6000, 'cList': row2Keys},
         {'speed': 8000, 'cList': row1Keys},
-        {'speed': 4000, 'cList': row1Keys},
+        {'speed': 6000, 'cList': row1Keys},
         {'speed': 8000, 'cList': row3Keys},
-        {'speed': 4000, 'cList': row3Keys},
+        {'speed': 6000, 'cList': row3Keys},
         {'speed': 8000, 'cList': allKeys},
-        {'speed': 4000, 'cList': allKeys}
+        {'speed': 6000, 'cList': allKeys}
       ]
 
       var fallingSpeed = levels[level].speed
