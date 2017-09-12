@@ -1,0 +1,22 @@
+.tt-explode{
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  box-shadow: -100px 0px blue, -92px -38px blue, -71px -71px blue, -38px -92px blue, 
+  			  0px -100px blue, 38px -92px blue, 71px -71px blue, 92px -38px blue, 
+  			  100px 0px blue, 92px 38px blue, 71px 71px blue, 38px 92px blue, 
+  			  0px 100px blue, -38px 92px blue, -71px 71px blue, -92px 38px blue;
+  animation: 1s bang ease-out backwards
+}
+
+@keyframes bang{
+	from{
+	  box-shadow: 0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue, 
+          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue,
+          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue,
+          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue
+	}
+}

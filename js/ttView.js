@@ -11,14 +11,19 @@ function Annimator(fallingSpeed, roundCount, level){
 
     this.gameDone = function(hitCount, missedCount, score, afterGameDone){
 
+        var fireWorks = $("<div class='pyro'></div>")
+        fireWorks.append($("<div class='before'></div>"))
+        fireWorks.append($("<div class='after'></div>"))
+        zone.append(fireWorks)
+
     	var scoreDisplay = $("<div></div>")
     	scoreDisplay.css({top:0, width:zone.width(), position:'absolute', background: '#DCDCDC', 'text-align': 'center'})
     	scoreDisplay.append($('<h3>' + hitCount + ' hitted; '+ missedCount + ' missed</h3>'))
     	scoreDisplay.append($('<h2>SCRORE: ' + score + '</h2>'))
     	zone.append(scoreDisplay)
     	scoreDisplay.animate({top: zone.height()/2 - scoreDisplay.height()/2})
-    	scoreDisplay.delay(1200)
-    	scoreDisplay.animate({top: zone.height() - scoreDisplay.height()}, function(){this.remove(), afterGameDone()})
+    	scoreDisplay.delay(2400)
+    	scoreDisplay.animate({top: zone.height() - scoreDisplay.height()}, function(){this.remove(), fireWorks.remove(), afterGameDone()})
     }
 
     this.showGameStartHint = function(){
@@ -37,14 +42,22 @@ function updateMissedCount(count){
 }
 
 function charactorElementInScreen(charactor){
-	var element = $('<p class="object">' + charactor + '</p>')
-	element.css({top:0, left: getRandomInt(0, zone.width() - element.width()), position: 'absolute', 'font-size': fontSizeSetting})
+    var element = $('<div></div>')
+    var charactor = $('<p class="object">' + charactor + '</p>')
+    charactor.css({'font-size': fontSizeSetting})
+    element.append(charactor)
+    element.css({top:0, left: getRandomInt(0, zone.width() - element.width()), position: 'absolute', 'font-size': fontSizeSetting, overflow:'visible'})
 	return element
 }
 
-function elementHit(element){
+function elementHit(element, functionAfterAnnimation){
 	element.stop()
-	element.effect("explode", {pieces: 4}, "slow")
+    $(element).append($('<div class="tt-explode"></div>'))
+    element.find(".object").effect("explode", {pieces: 4}, "slow")
+    window.setTimeout(functionAfterAnnimation, 500);
+    // functionAfterAnnimation();
+    // $(element).find(".object").effect("explode", {pieces: 4}, "slow")
+
 }
 
 function viewLevelUp(level){

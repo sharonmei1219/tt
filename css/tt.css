@@ -2,6 +2,7 @@
         background: black;
         height: 600px;
         position: relative;
+        overflow:visible
       }
       .object{
         color: white;

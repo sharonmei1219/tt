@@ -5,6 +5,8 @@
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/0a3c6e242d.js"></script>
     <link href="css/tt.css" rel="stylesheet">
+    <link href="css/ttFireWorks.css" rel="stylesheet">
+    <link href="css/ttExplose.css" rel="stylesheet">
 </head>
 
 <body>
@@ -18,7 +20,7 @@
       </div>
       </div>
   </div>
-  <div class="row">
+  <div class="row" style="overflow: visible;">
     <div id = "controlZone" class="col-lg-2 col-md-2">
       <div id="optional-area" class="margin-left">
         <h3>Font Size</h3>
@@ -61,10 +63,6 @@
     </div>
     <div id="gameZone" class="col-lg-8 col-md-8" >
     </div>
-<div class="pyro">
-  <div class="before"></div>
-  <div class="after"></div>
-</div>
     <div id="statusZone" class="col-lg-2">
       <p id="missed-count" style="font-size: 30px">0 missed<p>
     </div>
@@ -81,13 +79,13 @@
     function Round(roundCount, level){
       var levels=[
         {'speed': 8000, 'cList': row2Keys},
-        {'speed': 6000, 'cList': row2Keys},
-        {'speed': 8000, 'cList': row1Keys},
-        {'speed': 6000, 'cList': row1Keys},
-        {'speed': 8000, 'cList': row3Keys},
-        {'speed': 6000, 'cList': row3Keys},
-        {'speed': 8000, 'cList': allKeys},
-        {'speed': 6000, 'cList': allKeys}
+        {'speed': 7000, 'cList': row2Keys},
+        {'speed': 9000, 'cList': row1Keys},
+        {'speed': 7000, 'cList': row1Keys},
+        {'speed': 9000, 'cList': row3Keys},
+        {'speed': 7000, 'cList': row3Keys},
+        {'speed': 9000, 'cList': allKeys},
+        {'speed': 7000, 'cList': allKeys}
       ]
 
       var fallingSpeed = levels[level].speed
@@ -97,7 +95,7 @@
       var ann = new Annimator(fallingSpeed, roundCount, level + 1)
       var candidateList = new CandidateList(cList)
 
-      var totalCount = 20;
+      var totalCount = 30;
       var missedCount = 0;
       var hitCount = 0;
       var fallingCount = 0;
@@ -129,7 +127,6 @@
           this.remove = function(target){
               var index = tl.indexOf(target)
               tl.splice(index, 1)
-              target.element.remove()
           }
 
           this.find = function(charactor){
@@ -148,6 +145,7 @@
         return function(){
           candidateList.restore(target.charactor)
           targetList.remove(target)
+          target.element.remove()
           var count = incMissedCount()
           updateMissedCount(count)
           if(allHitOrMissed()){
@@ -178,12 +176,11 @@
           if (matchedTarget == undefined){
             return
           }
-          elementHit(matchedTarget.element)
+          elementHit(matchedTarget.element, function(){matchedTarget.element.remove()})
           candidateList.restore(matchedTarget.charactor)
           targetList.remove(matchedTarget)
           incHitCount()
           if(allHitOrMissed()){
-            console.log("in keyIn function score is: " + score())
             ann.gameDone(hitCount, missedCount, score(), function(){$(document).trigger("tt-gameStart", [score()])})
           }
         }
