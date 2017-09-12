@@ -1,22 +1,22 @@
 .tt-explode{
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 3px;
+  height: 3px;
   left: 50%;
   top: 50%;
   border-radius: 50%;
-  box-shadow: -100px 0px blue, -92px -38px blue, -71px -71px blue, -38px -92px blue, 
-  			  0px -100px blue, 38px -92px blue, 71px -71px blue, 92px -38px blue, 
-  			  100px 0px blue, 92px 38px blue, 71px 71px blue, 38px 92px blue, 
-  			  0px 100px blue, -38px 92px blue, -71px 71px blue, -92px 38px blue;
+  box-shadow: -100px 0px yellow, -92px -38px yellow, -71px -71px yellow, -38px -92px yellow, 
+  			  0px -100px yellow, 38px -92px yellow, 71px -71px yellow, 92px -38px yellow, 
+  			  100px 0px yellow, 92px 38px yellow, 71px 71px yellow, 38px 92px yellow, 
+  			  0px 100px yellow, -38px 92px yellow, -71px 71px yellow, -92px 38px yellow;
   animation: 1s bang ease-out backwards
 }
 
 @keyframes bang{
 	from{
-	  box-shadow: 0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue, 
-          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue,
-          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue,
-          0px 0px blue, 0px 0px blue, 0px 0px blue, 0px 0px blue
+	  box-shadow: 0px 0px yellow, 0px 0px yellow, 0px 0px yellow, 0px 0px yellow, 
+          0px 0px yellow, 0px 0px yellow, 0px 0px yellow, 0px 0px yellow,
+          0px 0px yellow, 0px 0px yellow, 0px 0px yellow, 0px 0px yellow,
+          0px 0px yellow, 0px 0px yellow, 0px 0px yellow, 0px 0px yellow
 	}
 }
