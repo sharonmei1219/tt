@@ -5,10 +5,14 @@
   left: 50%;
   top: 50%;
   border-radius: 50%;
-  box-shadow: -100px 0px yellow, -92px -38px yellow, -71px -71px yellow, -38px -92px yellow, 
+/*  box-shadow: -100px 0px yellow, -92px -38px yellow, -71px -71px yellow, -38px -92px yellow, 
   			  0px -100px yellow, 38px -92px yellow, 71px -71px yellow, 92px -38px yellow, 
   			  100px 0px yellow, 92px 38px yellow, 71px 71px yellow, 38px 92px yellow, 
-  			  0px 100px yellow, -38px 92px yellow, -71px 71px yellow, -92px 38px yellow;
+  			  0px 100px yellow, -38px 92px yellow, -71px 71px yellow, -92px 38px yellow;*/
+  box-shadow: -50px 0px yellow, -46px -19px yellow, -36px -36px yellow, -19px -46px yellow, 
+  			  0px -50px yellow, 19px -46px yellow, 36px -36px yellow, 46px -19px yellow, 
+  			  50px 0px yellow, 46px 19px yellow, 36px 36px yellow, 19px 46px yellow, 
+  			  0px 50px yellow, -19px 46px yellow, -36px 36px yellow, -46px 19px yellow;
   animation: 1s bang ease-out backwards
 }
 

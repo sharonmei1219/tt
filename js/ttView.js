@@ -22,7 +22,7 @@ function Annimator(fallingSpeed, roundCount, level){
     	scoreDisplay.append($('<h2>SCRORE: ' + score + '</h2>'))
     	zone.append(scoreDisplay)
     	scoreDisplay.animate({top: zone.height()/2 - scoreDisplay.height()/2})
-    	scoreDisplay.delay(2400)
+    	scoreDisplay.delay(3000)
     	scoreDisplay.animate({top: zone.height() - scoreDisplay.height()}, function(){this.remove(), fireWorks.remove(), afterGameDone()})
     }
 
@@ -55,9 +55,6 @@ function elementHit(element, functionAfterAnnimation){
     $(element).append($('<div class="tt-explode"></div>'))
     element.find(".object").effect("explode", {pieces: 4}, "slow")
     window.setTimeout(functionAfterAnnimation, 500);
-    // functionAfterAnnimation();
-    // $(element).find(".object").effect("explode", {pieces: 4}, "slow")
-
 }
 
 function viewLevelUp(level){

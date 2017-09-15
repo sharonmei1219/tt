@@ -13,7 +13,7 @@
   <div class="row text center padding">
       <div class="col-lg-offset-2 col-lg-8  col-md-offset-2 col-md-8">
       <div class = "blog-title">
-    	<p>Typing For Fun</p>
+    	<p>Lulu's Typing Practice</p>
       </div>
       <div class = "blog-description">
     	<p>A game to guide you to get familiar to keyboard</p>
@@ -77,6 +77,8 @@
     <script type="text/javascript">
 
     function Round(roundCount, level){
+      var self = this
+
       var levels=[
         {'speed': 8000, 'cList': row2Keys},
         {'speed': 7000, 'cList': row2Keys},
@@ -149,11 +151,20 @@
           var count = incMissedCount()
           updateMissedCount(count)
           if(allHitOrMissed()){
-            ann.gameDone(hitCount, missedCount, score(), function(){$(document).trigger("tt-gameStart", [score()])})
-            
+            ann.gameDone(hitCount, missedCount, score(), self.startNewRound)
           }
         }
       }
+
+      this.terminate = function(){
+        clearInterval(charactorLoop)
+      }
+
+      this.startNewRound = function(){
+        $(document).trigger("tt-gameStart", [score()])
+      }
+
+
 
       function addCharactorInScreen(){
         var charactor = candidateList.get()
@@ -163,7 +174,7 @@
         targetList.add(target)
         ann.add(target.element, funForFallingOutOfScreen(target))
         if(incFallingCount()){
-          clearInterval(charactorLoop)
+          self.terminate()
         }
       }
 
@@ -172,7 +183,7 @@
       }
 
       function keyIn(charactor){
-          matchedTarget = targetList.find(charactor)
+          var matchedTarget = targetList.find(charactor)
           if (matchedTarget == undefined){
             return
           }
@@ -181,7 +192,7 @@
           targetList.remove(matchedTarget)
           incHitCount()
           if(allHitOrMissed()){
-            ann.gameDone(hitCount, missedCount, score(), function(){$(document).trigger("tt-gameStart", [score()])})
+            ann.gameDone(hitCount, missedCount, score(), self.startNewRound)
           }
         }
 
@@ -203,26 +214,42 @@
       })
 
       this.upgrade = function(){
-        console.log(score())
-        return score() > 80
+        return score() > 90
       }
     }
 
     var roundCount = 0
-    var level = 0
+    var playingLevel = 0
+    var reachedLevel = 0
+    var round
+    viewLevelUp(reachedLevel)
+
+    function levelSelected(level){
+      playingLevel = level
+      $(document).trigger("tt-gameStart", [0])
+    }
 
     $(document).on("tt-gameStart", function(e, score){
       
-      if(score > 80 && level < 8){
-        viewLevelUp(level)
-        level ++
+      if(score > 80 && playingLevel < 8){
+        playingLevel ++
+        if(playingLevel > reachedLevel){
+          reachedLevel = playingLevel
+          viewLevelUp(reachedLevel)
+        }
       }
 
-      var round = new Round(roundCount, level)
+      round = new Round(roundCount, playingLevel)
       roundCount ++
     })
 
-    $(document).trigger("tt-gameStart", 0)
+    $(document).trigger("tt-gameStart", [0])
+
+    $("#level-6").click(function(){
+      round.terminate()
+      delete round
+      $(document).unbind("keypress")
+      $(document).trigger("tt-gameStart", [0])})
 
     </script>
 </html>
